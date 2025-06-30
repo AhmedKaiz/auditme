@@ -29,3 +29,22 @@ Goal:
 Build the full front-end React component(s) in a clean, modular way with all UI states and transitions handled.
 
 */
+
+'use client';
+export default function AuditResult({ auditText, onDownload, jsonReady }) {
+  return (
+    <section className="max-w-4xl mx-auto py-12 px-4 text-white space-y-8">
+      <div className="bg-gray-900/60 p-8 rounded-2xl h-96 overflow-y-auto">
+        <pre className="whitespace-pre-wrap text-lg">{auditText}</pre>
+      </div>
+
+      <button
+        disabled={!jsonReady}
+        onClick={onDownload}
+        className="px-8 py-3 rounded-xl font-bold bg-purple-700 disabled:bg-gray-700"
+      >
+        Download JSON
+      </button>
+    </section>
+  );
+}

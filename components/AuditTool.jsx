@@ -43,8 +43,35 @@ export default function AuditTool() {
     setLoading(true);
 
     // Simulate backend response
-    setTimeout(() => {
+    setTimeout(async () => {
       alert('Audit complete! (This will show the result later)');
+      const handle = document.getElementById('twitter-handle').value;
+      const context = document.getElementById('business-context').value;
+
+      const data = {
+        handle: handle,
+        context: context
+      };
+
+      try {
+        const res = await fetch('https://abc123.ngrok.io/webhook/twitter-audit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          alert("Submitted successfully!");
+        } else {
+          alert("Error submitting form.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Network error.");
+      }
+
       setLoading(false);
     }, 2000);
   };
