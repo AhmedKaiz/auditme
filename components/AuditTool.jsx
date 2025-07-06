@@ -30,6 +30,7 @@ Build the full front-end React component(s) in a clean, modular way with all UI 
 
 */
 
+
 'use client';
 import { useState } from 'react';
 import AuditForm from './AuditForm';
@@ -39,41 +40,33 @@ export default function AuditTool() {
   const [handle, setHandle] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true);
-
-    // Simulate backend response
-    setTimeout(async () => {
-      alert('Audit complete! (This will show the result later)');
-      const handle = document.getElementById('twitter-handle').value;
-      const context = document.getElementById('business-context').value;
-
-      const data = {
-        handle: handle,
-        context: context
-      };
-
-      try {
-        const res = await fetch('https://abc123.ngrok.io/webhook/twitter-audit', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        });
-
-        if (res.ok) {
-          alert("Submitted successfully!");
-        } else {
-          alert("Error submitting form.");
-        }
-      } catch (err) {
-        console.error(err);
-        alert("Network error.");
+  
+    try {
+      const response = await fetch('https://n8n.srv891416.hstgr.cloud/webhook/twitteraudit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          handle: handle,     // or just "handle" if using shorthand
+          context: context,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Audit failed. Try again.');
       }
-
-      setLoading(false);
-    }, 2000);
+  
+      const data = await response.json(); // Optional: use this if you respond from n8n
+      console.log('n8n result:', data);
+      alert('Audit complete!');
+    } catch (error) {
+      alert('Error: ' + error.message);
+    }
+  
+    setLoading(false);
   };
 
   return (

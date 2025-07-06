@@ -29,114 +29,97 @@ Goal:
 Build the full front-end React component(s) in a clean, modular way with all UI states and transitions handled.
 
 */
-import React from 'react';
-import { ArrowLeft, Download, CheckCircle } from 'lucide-react';
+import { FaGhost } from 'react-icons/fa';
+import { ImSpinner2 } from 'react-icons/im';
 
-export default function AuditResult({ auditText, onDownload, jsonReady, onGoBack }) {
+export default function AuditForm({
+  context,
+  setContext,
+  handle,
+  setHandle,
+  onSubmit,
+  loading,
+}) {
+  const isFormValid = context.trim() && handle.trim();
+
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Soft Purple Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-transparent" />
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-purple-900/10"></div>
 
-      {/* Header */}
-      <div className="relative z-10 px-6 py-8">
+      <div className="relative z-10 py-12 px-4">
         <div className="max-w-4xl mx-auto">
-          {/* Back Navigation */}
-          <button 
-            onClick={onGoBack}
-            className="flex items-center gap-2 text-purple-300 hover:text-purple-200 transition-colors mb-8 group"
-          >
-            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            <span className="text-lg">Back to Audit Form</span>
-          </button>
+          {/* Header */}
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center mb-6">
 
-          {/* Title Section */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-3 mb-6">
-              <CheckCircle className="w-8 h-8 text-purple-400" />
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Audit Complete
-              </h1>
+            <h1
+            className="text-7xl md:text-8xl font-black bg-clip-text text-transparent leading-tight"
+            style={{
+                backgroundImage: 'linear-gradient(to right, #5e1cc4, #c453f3)'
+            }}
+            >
+            Audit Me
+            </h1>
             </div>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Your brutally honest Twitter analysis is ready. Here's what we discovered about your presence.
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+              Uncover the invisible patterns in your Twitter presence. Get brutally honest insights that most won't tell you.
             </p>
           </div>
-        </div>
-      </div>
 
-      {/* Main Content */}
-      <div className="relative z-10 px-6 pb-12">
-        <div className="max-w-4xl mx-auto">
-          {/* Audit Results Card */}
-          <div className="bg-gray-900/50 backdrop-blur-sm border border-purple-500/20 rounded-2xl p-8 mb-8 shadow-2xl">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white">Your Audit Results</h2>
-              <div className="px-4 py-2 bg-purple-600/20 border border-purple-500/30 rounded-full">
-                <span className="text-purple-300 text-sm font-medium">AI Analysis Complete</span>
+          {/* Main Form */}
+          <div className="space-y-8">
+            {/* Business Context Input */}
+            <div>
+              <label htmlFor="business-context" className="block text-lg font-semibold text-gray-200 mb-4">
+                Tell me about your business and goals
+              </label>
+              <textarea
+                id="business-context"
+                value={context}
+                onChange={(e) => setContext(e.target.value)}
+                placeholder="What's your business? Who's your target audience? What are you trying to achieve on Twitter? Be specific..."
+                className="w-full h-48 px-6 py-4 text-2xl bg-gray-900/50 border-2 border-gray-700 rounded-2xl focus:border-purple-500 focus:ring-0 resize-none placeholder-gray-500 transition-all duration-300 backdrop-blur-sm text-white"
+                disabled={loading}
+              />
+            </div>
+
+            {/* Twitter Handle Input */}
+            <div>
+              <label htmlFor="twitter-handle" className="block text-lg font-semibold text-gray-200 mb-4">
+                Your Twitter handle
+              </label>
+              <div className="relative">
+                <span className="absolute left-6 top-1/2 transform -translate-y-1/2 text-3xl text-purple-400 font-medium">
+                  @
+                </span>
+                <input
+                  id="twitter-handle"
+                  type="text"
+                  value={handle}
+                  onChange={(e) => setHandle(e.target.value)}
+                  placeholder="yourusername"
+                  className="w-full pl-16 pr-6 py-4 text-3xl bg-gray-900/50 border-2 border-gray-700 rounded-2xl focus:border-purple-500 focus:ring-0 placeholder-gray-500 transition-all duration-300 text-white"
+                  disabled={loading}
+                />
               </div>
             </div>
-            
-            {/* Audit Text Display */}
-            <div className="bg-black/30 border border-gray-700/50 rounded-xl p-6 max-h-96 overflow-y-auto">
-              <pre className="whitespace-pre-wrap text-gray-200 leading-relaxed font-mono text-sm">
-                {auditText}
-              </pre>
-            </div>
-          </div>
 
-          {/* Download Section */}
-          <div className="bg-gradient-to-r from-purple-900/30 to-pink-900/30 backdrop-blur-sm border border-purple-500/20 rounded-2xl p-8 shadow-2xl">
-            <div className="text-center">
-              <div className="mb-6">
-                <div className="w-16 h-16 bg-purple-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Download className="w-8 h-8 text-purple-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-2">Download Your Context Profile</h3>
-                <p className="text-gray-300 max-w-md mx-auto">
-                  Get your personalized JSON context file for enhanced ChatGPT interactions and future reference.
-                </p>
-              </div>
-
-              {jsonReady ? (
-                <button
-                  onClick={onDownload}
-                  className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25"
-                >
-                  <Download className="w-5 h-5" />
-                  Download JSON Profile
-                </button>
-              ) : (
-                <div className="inline-flex items-center gap-3 bg-gray-700/50 text-gray-400 font-bold py-4 px-8 rounded-xl cursor-not-allowed">
-                  <div className="w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-                  Preparing Download...
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Action Cards */}
-          <div className="grid md:grid-cols-2 gap-6 mt-8">
-            <div className="bg-gray-900/30 backdrop-blur-sm border border-purple-500/10 rounded-xl p-6 hover:border-purple-500/30 transition-colors">
-              <h4 className="text-lg font-semibold text-white mb-2">Run Another Audit</h4>
-              <p className="text-gray-400 text-sm mb-4">
-                Want to analyze a different Twitter account or update your context?
-              </p>
+            {/* Submit Button */}
+            <div className="text-center pt-4">
               <button
-                onClick={onGoBack}
-                className="text-purple-400 hover:text-purple-300 font-medium transition-colors"
+                onClick={onSubmit}
+                disabled={!isFormValid || loading}
+                className="px-12 py-4 text-xl font-bold bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-2xl hover:from-purple-500 hover:to-purple-600 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed transition-all duration-300 min-w-[220px] flex items-center justify-center mx-auto shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40"
               >
-                Start New Audit →
-              </button>
-            </div>
-
-            <div className="bg-gray-900/30 backdrop-blur-sm border border-purple-500/10 rounded-xl p-6 hover:border-purple-500/30 transition-colors">
-              <h4 className="text-lg font-semibold text-white mb-2">Share Results</h4>
-              <p className="text-gray-400 text-sm mb-4">
-                Found the insights valuable? Share your experience with others.
-              </p>
-              <button className="text-purple-400 hover:text-purple-300 font-medium transition-colors">
-                Share Feedback →
+                {loading ? (
+                  <>
+                    <ImSpinner2 className="w-5 h-5 mr-2 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : (
+                  'Audit Me'
+                )}
               </button>
             </div>
           </div>

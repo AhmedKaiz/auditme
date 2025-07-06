@@ -1,140 +1,30 @@
 import React, { useState } from 'react';
 import { Check, Star, Zap, Target, Eye, Menu, X } from 'lucide-react';
 
-export default function AuditMeLanding() {
+export default function Paywall({ onUnlock }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentView, setCurrentView] = useState('landing'); // landing, login, signup
+  const [email, setEmail] = useState('');
+  const [isHighlighted, setIsHighlighted] = useState(false);
 
-  const handlePayment = () => {
-    // Integrate with your payment processor (Stripe, etc.)
-    alert('Redirecting to payment processor...');
+  const handleJoinWaitlist = () => {
+    if (email) {
+      alert('Thank you for joining the waitlist! We\'ll notify you when we launch.');
+      setEmail('');
+    }
   };
 
-  const LoginForm = () => (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center py-12 px-4">
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-purple-900/10"></div>
-      <div className="relative z-10 max-w-md w-full">
-        <div className="bg-gray-900/60 border border-gray-700/50 rounded-2xl p-8 backdrop-blur-sm shadow-2xl">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-              Welcome Back
-            </h2>
-          </div>
-          
-          <div className="space-y-6">
-            <div>
-              <label className="block text-gray-200 text-sm font-medium mb-2">Email</label>
-              <input
-                type="email"
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:border-purple-500 focus:ring-0 text-white placeholder-gray-400"
-                placeholder="your@email.com"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-gray-200 text-sm font-medium mb-2">Password</label>
-              <input
-                type="password"
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:border-purple-500 focus:ring-0 text-white placeholder-gray-400"
-                placeholder="••••••••"
-              />
-            </div>
-            
-            <button className="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl hover:from-purple-500 hover:to-purple-600 font-medium transition-all duration-300 active:scale-95 active:shadow-lg active:shadow-purple-500/50 active:from-purple-400 active:to-purple-500">
-              Sign In
-            </button>
-            
-            <div className="text-center">
-              <button 
-                onClick={() => setCurrentView('signup')}
-                className="text-purple-400 hover:text-purple-300 text-sm"
-              >
-                Don't have an account? Sign up
-              </button>
-            </div>
-            
-            <div className="text-center">
-              <button 
-                onClick={() => setCurrentView('landing')}
-                className="text-gray-400 hover:text-gray-300 text-sm"
-              >
-                ← Back to home
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const SignupForm = () => (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center py-12 px-4">
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-purple-900/10"></div>
-      <div className="relative z-10 max-w-md w-full">
-        <div className="bg-gray-900/60 border border-gray-700/50 rounded-2xl p-8 backdrop-blur-sm shadow-2xl">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-              Join Audit Me
-            </h2>
-          </div>
-          
-          <div className="space-y-6">
-            <div>
-              <label className="block text-gray-200 text-sm font-medium mb-2">Full Name</label>
-              <input
-                type="text"
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:border-purple-500 focus:ring-0 text-white placeholder-gray-400"
-                placeholder="John Doe"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-gray-200 text-sm font-medium mb-2">Email</label>
-              <input
-                type="email"
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:border-purple-500 focus:ring-0 text-white placeholder-gray-400"
-                placeholder="your@email.com"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-gray-200 text-sm font-medium mb-2">Password</label>
-              <input
-                type="password"
-                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-xl focus:border-purple-500 focus:ring-0 text-white placeholder-gray-400"
-                placeholder="••••••••"
-              />
-            </div>
-            
-            <button className="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl hover:from-purple-500 hover:to-purple-600 font-medium transition-all duration-300 active:scale-95 active:shadow-lg active:shadow-purple-500/50 active:from-purple-400 active:to-purple-500">
-              Create Account
-            </button>
-            
-            <div className="text-center">
-              <button 
-                onClick={() => setCurrentView('login')}
-                className="text-purple-400 hover:text-purple-300 text-sm"
-              >
-                Already have an account? Sign in
-              </button>
-            </div>
-            
-            <div className="text-center">
-              <button 
-                onClick={() => setCurrentView('landing')}
-                className="text-gray-400 hover:text-gray-300 text-sm"
-              >
-                ← Back to home
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  if (currentView === 'login') return <LoginForm />;
-  if (currentView === 'signup') return <SignupForm />;
+  const handlePaymentWaitlist = () => {
+    // Scroll to top of page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Highlight the waitlist input form
+    setIsHighlighted(true);
+    
+    // Remove highlight after 2 seconds
+    setTimeout(() => {
+      setIsHighlighted(false);
+    }, 2000);
+  };
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -155,22 +45,6 @@ export default function AuditMeLanding() {
               </span>
             </div>
             
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-6">
-              <button 
-                onClick={() => setCurrentView('login')}
-                className="text-gray-300 hover:text-white transition-colors"
-              >
-                Log In
-              </button>
-              <button 
-                onClick={() => setCurrentView('signup')}
-                className="px-6 py-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl hover:from-purple-500 hover:to-purple-600 transition-all duration-300 active:scale-95 active:shadow-lg active:shadow-purple-500/50 active:from-purple-400 active:to-purple-500"
-              >
-                Sign Up
-              </button>
-            </div>
-            
             {/* Mobile menu button */}
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -184,18 +58,9 @@ export default function AuditMeLanding() {
           {isMenuOpen && (
             <div className="md:hidden mt-4 pb-4 animate-in slide-in-from-top-2 duration-300">
               <div className="flex flex-col space-y-4 bg-gray-900/80 rounded-xl p-4 backdrop-blur-sm border border-gray-700/50">
-                <button 
-                  onClick={() => {setCurrentView('login'); setIsMenuOpen(false);}}
-                  className="text-gray-300 hover:text-white transition-colors text-left py-2"
-                >
-                  Log In
-                </button>
-                <button 
-                  onClick={() => {setCurrentView('signup'); setIsMenuOpen(false);}}
-                  className="px-6 py-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl hover:from-purple-500 hover:to-purple-600 transition-all duration-300 text-left active:scale-95 active:shadow-lg active:shadow-purple-500/50 active:from-purple-400 active:to-purple-500"
-                >
-                  Sign Up
-                </button>
+                <div className="text-gray-300 text-sm">
+                  Coming Soon
+                </div>
               </div>
             </div>
           )}
@@ -208,8 +73,6 @@ export default function AuditMeLanding() {
                 style={{
                     backgroundImage: 'linear-gradient(to right, #5e1cc4, #c453f3)'
                 }}
-              
-            
             >
               Audit Me
             </h1>
@@ -221,16 +84,42 @@ export default function AuditMeLanding() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <button 
-                onClick={() => setCurrentView('signup')}
-                className="px-12 py-4 text-xl font-bold bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-2xl hover:from-purple-500 hover:to-purple-600 transition-all duration-300 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 active:scale-95 active:shadow-2xl active:shadow-purple-500/60 active:from-purple-400 active:to-purple-500"
-              >
-                Start Your Audit
-              </button>
               <div className="flex items-center text-gray-400">
                 <Star className="w-5 h-5 text-yellow-400 mr-2" />
                 <span>Join 1,000+ solopreneurs</span>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Waitlist Section */}
+        <section className="px-4 py-20">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent mb-8">
+              Join the Waitlist
+            </h2>
+            <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+              Be the first to know when we launch. Get early access and exclusive insights.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                className={`flex-1 px-6 py-4 bg-gray-800/50 border rounded-2xl focus:border-purple-500 focus:ring-0 text-white placeholder-gray-400 text-lg transition-all duration-300 ${
+                  isHighlighted 
+                    ? 'border-purple-500 shadow-lg shadow-purple-500/50' 
+                    : 'border-gray-600'
+                }`}
+              />
+              <button 
+                onClick={handleJoinWaitlist}
+                className="px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-2xl hover:from-purple-500 hover:to-purple-600 transition-all duration-300 font-bold text-lg shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 active:scale-95 active:shadow-2xl active:shadow-purple-500/60 active:from-purple-400 active:to-purple-500"
+              >
+                Join
+              </button>
             </div>
           </div>
         </section>
@@ -282,7 +171,7 @@ export default function AuditMeLanding() {
                 <div className="text-center mb-8">
                   <h3 className="text-3xl font-bold text-white mb-2">Complete Twitter Audit</h3>
                   <div className="flex items-center justify-center mb-4">
-                    <span className="text-5xl font-black text-white">$10</span>
+                    <span className="text-5xl font-black text-white">$99</span>
                     <span className="text-gray-400 ml-2">one-time</span>
                   </div>
                   <p className="text-gray-300">Everything you need to transform your Twitter presence</p>
@@ -303,10 +192,6 @@ export default function AuditMeLanding() {
                   </div>
                   <div className="flex items-center">
                     <Check className="w-5 h-5 text-purple-400 mr-3 flex-shrink-0" />
-                    <span className="text-gray-200">Downloadable JSON context profile</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Check className="w-5 h-5 text-purple-400 mr-3 flex-shrink-0" />
                     <span className="text-gray-200">Brutal honesty (no sugar-coating)</span>
                   </div>
                   <div className="flex items-center">
@@ -316,10 +201,10 @@ export default function AuditMeLanding() {
                 </div>
                 
                 <button 
-                  onClick={handlePayment}
+                  onClick={handlePaymentWaitlist}
                   className="w-full py-4 text-xl font-bold bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-2xl hover:from-purple-500 hover:to-purple-600 transition-all duration-300 shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 active:scale-95 active:shadow-2xl active:shadow-purple-500/60 active:from-purple-400 active:to-purple-500"
                 >
-                  Get Your Audit Now
+                  Join Waitlist
                 </button>
                 
                 <p className="text-center text-gray-400 text-sm mt-4">
@@ -332,13 +217,12 @@ export default function AuditMeLanding() {
 
         {/* Footer */}
         <footer className="px-4 py-12 border-t border-gray-800">
-                      <div className="max-w-6xl mx-auto text-center">
+          <div className="max-w-6xl mx-auto text-center">
             <div className="flex items-center justify-center mb-6">
               <span className="text-2xl font-bold bg-clip-text text-transparent"
                 style={{
                     backgroundImage: 'linear-gradient(to right, #5e1cc4, #c453f3)'
                 }}
-              
               >
                 Audit Me
               </span>
